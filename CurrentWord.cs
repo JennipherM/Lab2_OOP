@@ -9,55 +9,100 @@ namespace Hangman
 {
     internal class CurrentWord
     {
-        static string guesses = "";
-        static int chances = 6;
-
-        public static void getWord(string word)
+        public static Boolean getWord(string word)
         {
-
-            char userGuess;
+            int chances = 6;
+            char userGuess = ' ';
             char[] letters = new char[word.Length];
+            Boolean playAgain = true;
+            string guesses = "";
 
+            //put letters
             for (int i = 0; i < word.Length; i++)
             {
                 letters[i] += '_';
             }
-        
-            while (chances > 0)
+
+
+            //loops while user wants to keep playing
+            while (playAgain)
             {
                 int incorrect = 0;
+                Boolean userWin = false;
 
                 printLetters(letters);
 
-                userGuess = getUserInput();
+                try
+                {
+                    Console.Write($"\nChances Left: {chances}\nGuess a Letter: ");
+                    userGuess = Convert.ToChar(Console.ReadLine());
+                }
+                //catches blank input
+                catch
+                {
+                    Console.WriteLine("Not a letter\n");
+                    continue;
+                }
                 
-                //checks if input is correct
-                for (int i = 0; i < word.Length; i++)
+                //checks if input is non letter char or an int
+                if (Char.IsLetter(userGuess) == false || Char.IsDigit(userGuess) == true)
                 {
-                    if (word[i] == userGuess)
+                    Console.WriteLine("Not a letter\n");
+                }
+                else
+                {
+                    guesses += userGuess + " ";
+                    Console.WriteLine($"\nLetters guessed: {guesses}\n");
+                    
+                    for (int i = 0; i < word.Length; i++)
                     {
-                        letters[i] = word[i];
+                        if (word[i] == userGuess)
+                        {
+                            letters[i] = word[i];
+                        }
+                        else
+                        {
+                            incorrect++;
+                        }
                     }
-                    else
+                    userWin = checkForWin(letters, word);
+
+                    if (userWin == false)
                     {
-                        incorrect++;
+                        //lose chance if input had no match for each letter
+                        if (incorrect == word.Length)
+                        {
+                            chances--;
+                            if (chances == 0)
+                            {
+                                Console.WriteLine($"You Lose!");
+                                Console.WriteLine($"Word was: {word}\n");
+                            }
+                        }
+                    }
+
+                    //runs if user wins or loses
+                    if (chances == 0 || userWin == true)
+                    {
+                        Console.Write("\nPlay again? Y/N: ");
+                        char temp = Convert.ToChar(Console.ReadLine().ToUpper());
+                        Console.WriteLine("\n");
+
+                        if (temp != 'Y')
+                        {
+                            playAgain = false;
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
                 }
-
-                //lose chance if inut had no match for each letter
-                if (incorrect == word.Length)
-                {
-                    chances--;
-                    if (chances == 0)
-                    {
-                        Console.WriteLine($"You Lose!");
-                    }
-                }
-
-                checkForWin(letters, word);
-
-            }
+            }      
+            //sends playAgain back to generate new word (if Y) or to stop program
+            return playAgain;
         }
+        
         public static void printLetters(char[] letters)
         {
             foreach (char c in letters)
@@ -65,28 +110,11 @@ namespace Hangman
                 Console.Write(c + " ");
             }
         }
-        public static char getUserInput()
-        {
-            char userGuess;
 
-            Console.Write($"\nChances Left: {chances}\nGuess a Letter: ");
-            userGuess = Convert.ToChar(Console.ReadLine());
-
-            
-            if (Char.IsLetterOrDigit(userGuess) == false || Char.IsDigit(userGuess) == true)
-            {
-                Console.WriteLine("Not a letter\n");
-            }
-            else
-            {
-                guesses += userGuess + " ";
-                Console.WriteLine($"\nLetters guessed: {guesses}\n");
-            }
-                return userGuess;
-        }
-        public static void checkForWin(char[] letters, string word)
+        public static Boolean checkForWin(char[] letters, string word)
         {
             string checkWord = "";
+            Boolean temp = false;
 
             //puts each char from letters into a new string
             foreach (char c in letters)
@@ -98,8 +126,11 @@ namespace Hangman
             if (checkWord == word)
             {
                 printLetters(letters);
-                Console.WriteLine($"\nYou win!");               
+                Console.WriteLine($"\nYou win!");
+                temp = true;
             }
+            //return win status
+            return temp;
         }
 
 

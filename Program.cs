@@ -13,14 +13,14 @@ namespace Hangman
         {
             // 1. hard coded hangman
 
-            /*
-
 
             string word = "Sequence";
-            char userGuess;
+            char userGuess= ' ';
             int chances = 6;
             string guesses = "";
             char[] letters = new char[word.Length];
+
+            Console.WriteLine("1. Hard Coded Hangman\n");
 
             //assigns each element in letters array to an underscore
             for (int i = 0; i < word.Length; i++)
@@ -40,84 +40,100 @@ namespace Hangman
                     Console.Write(c + " ");
                 }
 
-                Console.Write($"\nChances Left: {chances}\nGuess a Letter: ");
-                userGuess = Convert.ToChar(Console.ReadLine());
-
-                //checks if user guess is an int or non letter char
-                if (Char.IsLetterOrDigit(userGuess) == false || Char.IsDigit(userGuess) == true)
+                try
+                {
+                    Console.Write($"\nChances Left: {chances}\nGuess a Letter: ");
+                    userGuess = Convert.ToChar(Console.ReadLine());
+                }
+                //catches blank input
+                catch
                 {
                     Console.WriteLine("Not a letter\n");
                     continue;
                 }
 
-                if (userGuess == 's')
+                //checks if user guess is an int or non letter char
+                if (Char.IsLetter(userGuess) == false || Char.IsDigit(userGuess) == true)
                 {
-                    //makes user guess capital S
-                    userGuess = Char.ToUpper(userGuess);
+                    Console.WriteLine("Not a letter\n");
+                   // continue;
                 }
-
-                //add guesses to string + print list of guesses
-                guesses += userGuess + " ";
-                Console.WriteLine($"\nLetters guessed: {guesses}\n");
-
-                for (int i = 0; i < word.Length; i++)
+                else
                 {
-                    //checks each letter in word to see if their guess is a match
-                    if (word[i] == userGuess)
+                    if (userGuess == 's')
                     {
-                        letters[i] = word[i];
+                        //makes user guess capital S
+                        userGuess = Char.ToUpper(userGuess);
                     }
-                    //keeps track if the amount of times there wasn't a matching letter
-                    else
+
+                    //add guesses to string + print list of guesses
+                    guesses += userGuess + " ";
+                    Console.WriteLine($"\nLetters guessed: {guesses}\n");
+
+                    for (int i = 0; i < word.Length; i++)
                     {
-                        incorrect++;
+                        //checks each letter in word to see if their guess is a match
+                        if (word[i] == userGuess)
+                        {
+                            letters[i] = word[i];
+                        }
+                        //keeps track if the amount of times there wasn't a matching letter
+                        else
+                        {
+                            incorrect++;
+                        }
                     }
-                }
 
-                //if each letter in word (8) didn't have a match, lose a guess / print 
-                if (incorrect == word.Length)
-                {
-                    chances--;
-                    if (chances == 0)
+                    //if each letter in word (8) didn't have a match, lose a guess / print 
+                    if (incorrect == word.Length)
                     {
-                        Console.WriteLine($"You Lose!");
+                        chances--;
+                        if (chances == 0)
+                        {
+                            Console.WriteLine($"You Lose!");
+                        }
                     }
-                }
 
-                //puts each char from letters into a new string
-                foreach (char c in letters)
-                {
-                    checkWord += c;
-                }
-
-                //checks if user guessed all the letters
-                if (checkWord == word)
-                {
+                    //puts each char from letters into a new string
                     foreach (char c in letters)
                     {
-                        Console.Write(c + " ");
+                        checkWord += c;
                     }
-                    Console.WriteLine($"\nYou win!");
-                    break;
+
+                    //checks if user guessed all the letters
+                    if (checkWord == word)
+                    {
+                        foreach (char c in letters)
+                        {
+                            Console.Write(c + " ");
+                        }
+                        Console.WriteLine($"\nYou win!");
+                        break;
+                    }
                 }
+
             }
-
-
-             */
 
             // 2. OOP hangman
 
+            Console.WriteLine("\n\n2. Random Word Hangman\n");
+
+
+            Boolean playAgain = true;
             string[] wordArray = { "music", "cartoon", "chicken", "snow", "painting", "gnome", "astronaut", "video", "alien", "landmark", "museum", "spice", "square", "lime", "doctor" };
 
 
-            //generate random num
-            Random randomNum = new Random();
-            int wordIndex = randomNum.Next(16);
+            Random randomNum = new Random();     //generate random num
 
 
-            //send word to CurrentWord class
-            CurrentWord.getWord(wordArray[wordIndex]);
+            //generates new num / word to send to currentWord
+            while (playAgain)
+            {
+                int wordIndex = randomNum.Next(15);
 
+                //send word to CurrentWord class
+                playAgain = CurrentWord.getWord(wordArray[wordIndex]);
+            }
         }
     }
 }
