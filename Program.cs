@@ -13,7 +13,8 @@ namespace Hangman
         {
             // 1. hard coded hangman
 
-/*
+            /*
+
 
             string word = "Sequence";
             char userGuess;
@@ -27,6 +28,7 @@ namespace Hangman
                 letters[i] += '_';
             }
 
+            //loops until user runs out of chances
             while (chances > 0)
             {
                 int incorrect = 0;
@@ -38,8 +40,23 @@ namespace Hangman
                     Console.Write(c + " ");
                 }
 
-                Console.Write($"   Chances Left: {chances}\nGuess a Letter: ");
+                Console.Write($"\nChances Left: {chances}\nGuess a Letter: ");
                 userGuess = Convert.ToChar(Console.ReadLine());
+
+                //checks if user guess is an int or non letter char
+                if (Char.IsLetterOrDigit(userGuess) == false || Char.IsDigit(userGuess) == true)
+                {
+                    Console.WriteLine("Not a letter\n");
+                    continue;
+                }
+
+                if (userGuess == 's')
+                {
+                    //makes user guess capital S
+                    userGuess = Char.ToUpper(userGuess);
+                }
+
+                //add guesses to string + print list of guesses
                 guesses += userGuess + " ";
                 Console.WriteLine($"\nLetters guessed: {guesses}\n");
 
@@ -56,7 +73,8 @@ namespace Hangman
                         incorrect++;
                     }
                 }
-                //if each letter in word (8) didn't have a match, lose a guess + print 
+
+                //if each letter in word (8) didn't have a match, lose a guess / print 
                 if (incorrect == word.Length)
                 {
                     chances--;
@@ -66,30 +84,39 @@ namespace Hangman
                     }
                 }
 
-                //puts each char from letters into a new strirng
+                //puts each char from letters into a new string
                 foreach (char c in letters)
                 {
                     checkWord += c;
                 }
-                //checks if user guessed all the letters)
+
+                //checks if user guessed all the letters
                 if (checkWord == word)
                 {
-                    Console.WriteLine($"You win!");
+                    foreach (char c in letters)
+                    {
+                        Console.Write(c + " ");
+                    }
+                    Console.WriteLine($"\nYou win!");
                     break;
                 }
             }
 
-*/
 
-
+             */
 
             // 2. OOP hangman
 
-            string[] words = { "music", "cartoon", "chicken", "snow", "painting", "gnome", "astronaut", "video", "alien", "landmark", "museum", "spice", "square", "lime", "doctor" };
+            string[] wordArray = { "music", "cartoon", "chicken", "snow", "painting", "gnome", "astronaut", "video", "alien", "landmark", "museum", "spice", "square", "lime", "doctor" };
 
-             Random randomNum = new Random(16);
 
-            Console.WriteLine(randomNum);
+            //generate random num
+            Random randomNum = new Random();
+            int wordIndex = randomNum.Next(16);
+
+
+            //send word to CurrentWord class
+            CurrentWord.getWord(wordArray[wordIndex]);
 
         }
     }
