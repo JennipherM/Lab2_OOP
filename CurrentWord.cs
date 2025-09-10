@@ -69,6 +69,7 @@ namespace Hangman
                         //lose chance if input had no match for each letter
                         if (incorrect == word.Length)
                         {
+                            Console.WriteLine($"No letter '{userGuess}'");
                             chances--;
                             if (chances == 0)
                             {
