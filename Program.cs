@@ -13,7 +13,6 @@ namespace Hangman
         {
             // 1. hard coded hangman
 
-
             string word = "Sequence";
             char userGuess= ' ';
             int chances = 6;
@@ -53,7 +52,7 @@ namespace Hangman
                 }
 
                 //checks if user guess is an int or non letter char
-                if (Char.IsLetter(userGuess) == false || Char.IsDigit(userGuess) == true)
+                if (Char.IsLetter(userGuess) == false)
                 {
                     Console.WriteLine("Not a letter\n");
                    // continue;

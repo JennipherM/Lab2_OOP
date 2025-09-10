@@ -22,8 +22,6 @@ namespace Hangman
             {
                 letters[i] += '_';
             }
-
-
             //loops while user wants to keep playing
             while (playAgain)
             {
@@ -43,9 +41,8 @@ namespace Hangman
                     Console.WriteLine("Not a letter\n");
                     continue;
                 }
-                
-                //checks if input is non letter char or an int
-                if (Char.IsLetter(userGuess) == false || Char.IsDigit(userGuess) == true)
+                //checks if input is a letter
+                if (Char.IsLetter(userGuess) == false)
                 {
                     Console.WriteLine("Not a letter\n");
                 }
@@ -53,7 +50,7 @@ namespace Hangman
                 {
                     guesses += userGuess + " ";
                     Console.WriteLine($"\nLetters guessed: {guesses}\n");
-                    
+
                     for (int i = 0; i < word.Length; i++)
                     {
                         if (word[i] == userGuess)
@@ -84,25 +81,41 @@ namespace Hangman
                     //runs if user wins or loses
                     if (chances == 0 || userWin == true)
                     {
-                        Console.Write("\nPlay again? Y/N: ");
-                        char temp = Convert.ToChar(Console.ReadLine().ToUpper());
-                        Console.WriteLine("\n");
+                        Boolean validInput = false;
 
-                        if (temp != 'Y')
+                        //runs until a valid input is entered
+                        while (validInput == false)
                         {
-                            playAgain = false;
-                        }
-                        else
-                        {
-                            break;
+                            Console.Write("Play again? Y/N: ");
+                            try
+                            {
+                                char temp = Convert.ToChar(Console.ReadLine().ToUpper());
+
+                                if (temp == 'Y')
+                                {
+                                    return playAgain;
+                                }
+                                else if (temp == 'N')
+                                {
+                                    playAgain = false;
+                                    break;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Invalid Input: Enter Y or N\n");
+                                }
+                            }
+                            catch
+                            {
+                                Console.WriteLine("Invalid Input: Enter Y or N\n");
+                            }
                         }
                     }
                 }
             }      
-            //sends playAgain back to generate new word (if Y) or to stop program
+            //sends playAgain back to stop program
             return playAgain;
-        }
-        
+        }     
         public static void printLetters(char[] letters)
         {
             foreach (char c in letters)
@@ -110,7 +123,6 @@ namespace Hangman
                 Console.Write(c + " ");
             }
         }
-
         public static Boolean checkForWin(char[] letters, string word)
         {
             string checkWord = "";
@@ -126,13 +138,11 @@ namespace Hangman
             if (checkWord == word)
             {
                 printLetters(letters);
-                Console.WriteLine($"\nYou win!");
+                Console.WriteLine($"\nYou win!\n");
                 temp = true;
             }
             //return win status
             return temp;
         }
-
-
     }
 }
