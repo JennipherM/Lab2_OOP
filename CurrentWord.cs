@@ -9,7 +9,12 @@ namespace Hangman
 {
     internal class CurrentWord
     {
-        public static Boolean getWord(string word)
+        private string word;
+        public CurrentWord(string newWord)
+        {
+            word = newWord;
+        }
+        public Boolean getWord()
         {
             int chances = 6;
             char userGuess = ' ';

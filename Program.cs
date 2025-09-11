@@ -12,7 +12,7 @@ namespace Hangman
         static void Main(string[] args)
         {
             // 1. hard coded hangman
-
+            /*
             string word = "Sequence";
             char userGuess= ' ';
             int chances = 6;
@@ -113,6 +113,10 @@ namespace Hangman
 
             }
 
+
+
+            */
+
             // 2. OOP hangman
 
             Console.WriteLine("\n\n2. Random Word Hangman\n");
@@ -130,8 +134,9 @@ namespace Hangman
             {
                 int wordIndex = randomNum.Next(15);
 
-                //send word to CurrentWord class
-                playAgain = CurrentWord.getWord(wordArray[wordIndex]);
+                CurrentWord newWord = new CurrentWord(wordArray[wordIndex]);
+
+                playAgain = newWord.getWord();
             }
         }
     }
