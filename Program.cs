@@ -12,7 +12,6 @@ namespace Hangman
         static void Main(string[] args)
         {
             // 1. hard coded hangman
-            /*
             string word = "Sequence";
             char userGuess= ' ';
             int chances = 6;
@@ -110,24 +109,16 @@ namespace Hangman
                         break;
                     }
                 }
-
             }
-
-
-
-            */
 
             // 2. OOP hangman
 
             Console.WriteLine("\n\n2. Random Word Hangman\n");
 
-
             Boolean playAgain = true;
             string[] wordArray = { "music", "cartoon", "chicken", "snow", "painting", "gnome", "astronaut", "video", "alien", "landmark", "museum", "spice", "square", "lime", "doctor" };
 
-
             Random randomNum = new Random();     //generate random num
-
 
             //generates new num / word to send to currentWord
             while (playAgain)
